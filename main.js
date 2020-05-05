@@ -13,9 +13,10 @@ const slideList = [{
 
 
 const image = document.querySelector('img.slider');
-
 const h1 = document.querySelector('h1.slider');
 const dots = [...document.querySelectorAll('.dots span')];
+ 
+
 
 const time = 3000;
 
@@ -28,6 +29,36 @@ const changeDot = () => {
 
 }
 
+const keyChangeSlide = (e) => {
+    if(e.keyCode === 37){
+        clearInterval(timeout);
+        active--;
+        if(active < 0){
+            active = slideList.length - 1;
+        }
+        image.src = slideList[active].img;
+        h1.textContent = slideList[active].text;
+        changeDot();
+        timeout = setInterval(changeSlide, time);
+        
+    } else if (e.keyCode === 39){
+        clearInterval(timeout);
+        active++;
+        if(active === slideList.length){
+        active = 0
+        }
+        image.src = slideList[active].img;
+        h1.textContent = slideList[active].text;
+        changeDot();
+        timeout = setInterval(changeSlide, time);  
+    }
+
+}
+
+const stopInterval = () => {
+    
+}
+
 const changeSlide = () => {
     active++;
     if(active === slideList.length){
@@ -37,4 +68,5 @@ const changeSlide = () => {
     h1.textContent = slideList[active].text;
     changeDot()
 }
-setInterval(changeSlide, time)
+let timeout = setInterval(changeSlide, time);
+window.addEventListener('keydown', keyChangeSlide);
